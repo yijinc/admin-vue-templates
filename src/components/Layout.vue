@@ -14,7 +14,7 @@ const sidebar = useSidebarStore()
       <Header />
     </ElHeader>
     <ElContainer>
-      <ElAside :class="`${sidebar.collapse ? 'w-auto' : 'w-64'} transition-all duration-300`">
+      <ElAside class="w-auto">
         <Sidebar />
       </ElAside>
       <ElMain>

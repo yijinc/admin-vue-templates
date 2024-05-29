@@ -81,7 +81,7 @@ export default defineComponent({
 
     return () => (
       <ElMenu
-        class="h-full border-t"
+        class="h-full border-t [&:not(.el-menu--collapse)]:w-64"
         collapse={sidebar.collapse}
         defaultActive={route.path}
         defaultOpeneds={['/system']}
