@@ -8,7 +8,7 @@ import {
   ElCheckbox,
   ElButton,
   ElIcon,
-  vLoading,
+  ElLoading,
   ElMessage,
   ElNotification
 } from 'element-plus'
@@ -32,17 +32,19 @@ const loginParam = reactive<ILoginParam>({
   password: ''
 })
 const rememberMe = ref(false)
-const loading = ref(false)
 const passwordVisible = ref(false)
 const formRef = ref<FormInstance>()
 
 const onSubmit = () => {
   formRef.value?.validate(async (isValid, invalidFields) => {
-    if (isValid && !loading.value) {
-      loading.value = true
+    if (isValid) {
+      const loading = ElLoading.service({
+        lock: true,
+        text: '登录中，请稍后...',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
       try {
-        await delay(500)
-        loading.value = false
+        await delay(800)
         if (rememberMe.value) {
           localStorage.setItem(LOCAL_LOGIN_PARAM_KEY, JSON.stringify(loginParam))
         } else {
@@ -62,6 +64,7 @@ const onSubmit = () => {
       } catch (e) {
         ElMessage.error('登录失败')
       }
+      loading.close()
     }
   })
 }
@@ -126,14 +129,7 @@ loadLocalUser()
           <ElCheckbox v-model="rememberMe">记住密码</ElCheckbox>
         </ElFormItem>
         <ElFormItem>
-          <ElButton
-            size="large"
-            class="w-full"
-            type="primary"
-            v-loading.fullscreen.lock="loading"
-            @click="onSubmit"
-            >登录</ElButton
-          >
+          <ElButton size="large" class="w-full" type="primary" @click="onSubmit">登录</ElButton>
         </ElFormItem>
       </ElForm>
     </div>

@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 import { ElContainer, ElHeader, ElAside, ElMain } from 'element-plus'
-import { useSidebarStore } from '@/stores/sidebar'
 import Header from './Header.vue'
 import Sidebar from './Sidebar'
-
-const sidebar = useSidebarStore()
 </script>
 
 <template>
@@ -14,11 +11,13 @@ const sidebar = useSidebarStore()
       <Header />
     </ElHeader>
     <ElContainer>
-      <ElAside class="w-auto">
+      <ElAside style="width: auto">
         <Sidebar />
       </ElAside>
-      <ElMain>
-        <RouterView />
+      <ElMain class="bg-slate-100">
+        <ElMain class="h-full bg-white overflow-y-auto">
+          <RouterView />
+        </ElMain>
       </ElMain>
     </ElContainer>
   </ElContainer>
