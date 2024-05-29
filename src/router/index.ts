@@ -1,12 +1,14 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import Layout from '../components/Layout.vue'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 /**
  * 通过 RouteRecord 的 meta 对象，自定义 title & icon
  * { title: '', icon: '' }
  * 如果有值，就作为 menu 导航
  * **/
-const routes: Readonly<RouteRecordRaw[]> = [
+export const routes: Readonly<RouteRecordRaw[]> = [
   { path: '/', redirect: '/dashboard' },
   {
     path: '/',
@@ -16,13 +18,13 @@ const routes: Readonly<RouteRecordRaw[]> = [
       {
         path: '/dashboard',
         name: 'dashboard',
-        meta: { title: '首页', icon: '' },
+        meta: { title: '首页', icon: 'HomeFilled' },
         component: () => import('../views/dashboard/index.vue')
       },
       {
         path: '/system',
         name: 'system',
-        meta: { title: '系统管理', icon: '' },
+        meta: { title: '系统管理', icon: 'Grid' },
         children: [
           {
             path: '/system/app',
@@ -53,7 +55,7 @@ const routes: Readonly<RouteRecordRaw[]> = [
       {
         path: '/setting',
         name: 'setting',
-        meta: { title: '个人设置', icon: '' },
+        meta: { title: '个人设置', icon: 'Setting' },
         children: [
           {
             path: '/setting/personal-info',
@@ -83,23 +85,12 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  NProgress.start()
   next()
-  // NProgress.start();
-  // const role = localStorage.getItem('vuems_name');
-  // const permiss = usePermissStore();
-
-  // if (!role && to.meta.noAuth !== true) {
-  //     next('/login');
-  // } else if (typeof to.meta.permiss == 'string' && !permiss.key.includes(to.meta.permiss)) {
-  //     // 如果没有权限，则进入403
-  //     next('/403');
-  // } else {
-  //     next();
-  // }
 })
 
 router.afterEach(() => {
-  // NProgress.done();
+  NProgress.done()
 })
 
 export default router

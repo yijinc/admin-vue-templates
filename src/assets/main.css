@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --header-bg-color: #242f42;
+  --header-text-color: #fff;
+  --active-color: var(--el-color-primary);
+}
