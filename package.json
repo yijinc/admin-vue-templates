@@ -1,8 +1,16 @@
 {
-  "name": "admin-vue",
+  "name": "admin-vue-templates",
   "version": "0.0.0",
-  "private": true,
   "type": "module",
+  "author": "yijinc <yijinc@qq.com>",
+  "homepage": "https://yijinc.github.io/admin-vue-templates",
+  "keywords": [
+    "vue3",
+    "vue",
+    "admin",
+    "pinia",
+    "element-plus"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
