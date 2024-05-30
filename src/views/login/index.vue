@@ -28,8 +28,8 @@ const router = useRouter()
 const route = useRoute()
 
 const loginParam = reactive<ILoginParam>({
-  username: '',
-  password: ''
+  username: 'admin',
+  password: '123456'
 })
 const rememberMe = ref(false)
 const passwordVisible = ref(false)
