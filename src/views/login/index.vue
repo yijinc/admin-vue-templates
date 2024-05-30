@@ -14,6 +14,7 @@ import {
 } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { User, Lock, View, Hide } from '@element-plus/icons-vue'
+import { setToken } from '@/utils/request'
 import { login } from '@/apis/user'
 import loginBgImg from './login-bg.jpg'
 
@@ -45,6 +46,7 @@ const onSubmit = () => {
       })
       try {
         await login(loginParam)
+        setToken('token-123')
         if (rememberMe.value) {
           localStorage.setItem(LOCAL_LOGIN_PARAM_KEY, JSON.stringify(loginParam))
         } else {
@@ -54,7 +56,7 @@ const onSubmit = () => {
         if (redirect && redirect.startsWith('http')) {
           window.location.href = redirect
         } else {
-          router.replace(redirect || '/')
+          router.replace(redirect || '/system/user')
           ElNotification({
             title: '下午好！',
             message: '欢迎登录XXX系统',
