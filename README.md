@@ -2,7 +2,7 @@
 
 This template should help get you started developing with Vue 3 in Vite.
 
-use `npm create vue@latest` init project
+use `npm create vue@latest` init project, preview [https://yijinc.github.io/admin-vue-templates](https://yijinc.github.io/admin-vue-templates/)
 
 - TypeScript
 - JSX/TSX Support
