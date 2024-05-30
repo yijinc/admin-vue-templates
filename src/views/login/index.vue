@@ -14,9 +14,8 @@ import {
 } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { User, Lock, View, Hide } from '@element-plus/icons-vue'
+import { login } from '@/apis/user'
 import loginBgImg from './login-bg.jpg'
-
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 interface ILoginParam {
   username: string
@@ -45,7 +44,7 @@ const onSubmit = () => {
         background: 'rgba(0, 0, 0, 0.7)'
       })
       try {
-        await delay(800)
+        await login(loginParam)
         if (rememberMe.value) {
           localStorage.setItem(LOCAL_LOGIN_PARAM_KEY, JSON.stringify(loginParam))
         } else {

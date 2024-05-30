@@ -9,7 +9,7 @@ import 'nprogress/nprogress.css'
  * 如果有值，就作为 menu 导航
  * **/
 export const routes: Readonly<RouteRecordRaw[]> = [
-  { path: '/', redirect: '/dashboard' },
+  { path: '/', redirect: '/system/user' },
   {
     path: '/',
     name: 'admin',

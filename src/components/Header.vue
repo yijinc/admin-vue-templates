@@ -3,9 +3,14 @@ import { useRouter } from 'vue-router'
 import { ElIcon, ElDropdown, ElDropdownMenu, ElDropdownItem, ElAvatar } from 'element-plus'
 import { Expand, Fold, Bell, ArrowDown, User, SwitchButton } from '@element-plus/icons-vue'
 import { useSidebarStore } from '@/stores/sidebar'
+import { useUserInfoStore } from '@/stores/userInfo'
 
 const router = useRouter()
 const sidebar = useSidebarStore()
+const user = useUserInfoStore()
+
+user.getInfo()
+
 const handleCommand = (command: 'logout' | 'info') => {
   if (command === 'logout') {
     router.push('/login')
@@ -17,7 +22,7 @@ const handleCommand = (command: 'logout' | 'info') => {
 </script>
 
 <template>
-  <div class="w-full h-16 flex items-center justify-between">
+  <div class="w-full h-full flex items-center justify-between">
     <!-- left -->
     <div class="flex items-center pr-5">
       <img class="w-10" src="../assets/logo.svg" alt="logo" />
@@ -39,8 +44,8 @@ const handleCommand = (command: 'logout' | 'info') => {
       </ElIcon>
       <ElDropdown @command="handleCommand" trigger="click">
         <div class="flex items-center mr-2">
-          <ElAvatar />
-          <span class="ml-2">管理员</span>
+          <ElAvatar :size="32" :src="user.info.avatar" />
+          <span class="ml-2">{{ user.info.nickname }}</span>
           <ElIcon :size="20">
             <ArrowDown />
           </ElIcon>
