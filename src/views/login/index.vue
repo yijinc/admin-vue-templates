@@ -14,6 +14,7 @@ import {
 } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { User, Lock, View, Hide } from '@element-plus/icons-vue'
+import loginBgImg from './login-bg.jpg'
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -92,7 +93,10 @@ loadLocalUser()
 </script>
 <template>
   <div
-    class="flex items-center justify-center w-full h-screen bg-no-repeat bg-center bg-cover bg-[url('/login-bg.jpg')]"
+    class="flex items-center justify-center w-full h-screen bg-no-repeat bg-center bg-cover"
+    :style="{
+      'background-image': `url(${loginBgImg})`
+    }"
   >
     <div class="w-[440px] rounded-md bg-white p-12">
       <div class="flex mb-10 items-center justify-center">

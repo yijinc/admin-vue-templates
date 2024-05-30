@@ -8,18 +8,18 @@ import type {
   InternalAxiosRequestConfig
 } from 'axios'
 
-interface IRequestConfig<D = any> extends AxiosRequestConfig<D> {
+interface IRequestConfig extends AxiosRequestConfig {
   silent?: boolean // silent 默认为 false（undefined），统一错误弹窗，手动置true为自定义处理错误，不弹窗
 }
 
 interface IRequesInstancce extends Axios {
-  <T, R, D>(config: IRequestConfig<D>): Promise<T>
-  <T, R, D>(url: string, config?: IRequestConfig<D>): Promise<T>
-  get<T, R, D>(url: string, config?: IRequestConfig<D>): Promise<T>
-  get<T, R, D>(url: string, config?: IRequestConfig<D>): Promise<T>
-  post<T, R, D>(url: string, data?: D, config?: IRequestConfig<D>): Promise<T>
-  put<T, R, D>(url: string, data?: D, config?: IRequestConfig<D>): Promise<T>
-  delete<T, R, D>(url: string, config?: IRequestConfig<D>): Promise<T>
+  <T>(config: IRequestConfig): Promise<T>
+  <T>(url: string, config?: IRequestConfig): Promise<T>
+  get<T>(url: string, config?: IRequestConfig): Promise<T>
+  get<T>(url: string, config?: IRequestConfig): Promise<T>
+  post<T>(url: string, data?: any, config?: IRequestConfig): Promise<T>
+  put<T>(url: string, data?: any, config?: IRequestConfig): Promise<T>
+  delete<T>(url: string, config?: IRequestConfig): Promise<T>
 }
 
 class RequestError extends Error {

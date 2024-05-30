@@ -11,3 +11,10 @@ interface IResponseResult<T> {
   message: string
   data: T
 }
+
+interface IPage<T> {
+  records: T[]
+  total: number
+  size: number
+  current: number
+}
