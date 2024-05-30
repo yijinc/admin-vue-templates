@@ -1,6 +1,14 @@
-# admin-vue
+# admin-vue-templates
 
 This template should help get you started developing with Vue 3 in Vite.
+
+use `npm create vue@latest` init project
+
+- TypeScript
+- JSX/TSX Support
+- Pinia
+- ESLint
+- element-plus
 
 ## Recommended IDE Setup
 

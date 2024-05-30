@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
-import Layout from '../components/Layout.vue'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import { getToken } from '@/utils/request'
+import Layout from '@/components/Layout.vue'
 
 /**
  * 通过 RouteRecord 的 meta 对象，自定义 title & icon
@@ -9,7 +10,7 @@ import 'nprogress/nprogress.css'
  * 如果有值，就作为 menu 导航
  * **/
 export const routes: Readonly<RouteRecordRaw[]> = [
-  { path: '/', redirect: '/system/user' },
+  { path: '/', redirect: !getToken() ? '/login' : '/system/user' },
   {
     path: '/',
     name: 'admin',

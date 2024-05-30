@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import type {
   Axios,
@@ -31,13 +32,25 @@ class RequestError extends Error {
   }
 }
 
+export const APP_TOKEN_KEY = 'app-token'
+let token = localStorage.getItem(APP_TOKEN_KEY)
+
 const instance = axios.create({
   baseURL: '/api',
-  timeout: 5000
+  timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: !token ? undefined : `Bearer ${token}`,
+    appId: 'admin'
+  }
 }) as IRequesInstancce
 
 instance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    if (token !== null) {
+      config.headers.Authorization = 'Bearer ' + token
+    }
+    config.headers.timestap = Date.now()
     return config
   },
   (error: AxiosError) => {
@@ -69,6 +82,10 @@ instance.interceptors.response.use(
     }
   },
   (error: AxiosError) => {
+    if (error.cocde === 401) {
+      setToken(null)
+      useRouter().replace('/login')
+    }
     if (!error.request.silent) {
       ElMessage.error('登录失败')
     } else {
@@ -76,5 +93,15 @@ instance.interceptors.response.use(
     }
   }
 )
+
+export const getToken = () => token
+export const setToken = (t: string | null) => {
+  token = t
+  if (t === null) {
+    localStorage.removeItem(APP_TOKEN_KEY)
+  } else {
+    localStorage.setItem(APP_TOKEN_KEY, t)
+  }
+}
 
 export default instance

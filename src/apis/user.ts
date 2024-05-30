@@ -11,7 +11,7 @@ export const login = (data: { username: string; password: string }) => {
   //     silent: true // 关闭统一错误弹窗，调用方处理异常
   //   })
   // mock
-  return delay(500)
+  return delay(500).then(() => 'token:123')
 }
 
 export const fetchUserInfo = () => {
