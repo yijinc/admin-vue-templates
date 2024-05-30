@@ -68,6 +68,7 @@ const errorsMap = new Map<number, string>([
 ])
 
 instance.interceptors.response.use(
+  // @ts-ignore
   (response: AxiosResponse<IResponseResult<T>, D>) => {
     if (response.status === 200) {
       if (response.data.code === 0) {
@@ -82,6 +83,7 @@ instance.interceptors.response.use(
     }
   },
   (error: AxiosError) => {
+    // @ts-ignore
     if (error.cocde === 401) {
       setToken(null)
       useRouter().replace('/login')
