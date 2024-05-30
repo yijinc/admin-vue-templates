@@ -1,0 +1,1 @@
+import{_ as e}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{o as n,c as r}from"./index-DgYcBzlL.js";const c={};function o(t,s){return n(),r("h1",null,"geren xinxi")}const f=e(c,[["render",o]]);export{f as default};
