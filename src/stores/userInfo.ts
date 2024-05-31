@@ -18,7 +18,5 @@ export const useUserInfoStore = defineStore('userInfo', () => {
     fetchUserInfo().then((res) => Object.assign(info, res))
   }
 
-  getInfo()
-
   return { info, getInfo }
 })

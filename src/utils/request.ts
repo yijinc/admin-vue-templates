@@ -1,16 +1,21 @@
 import axios from 'axios'
-import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { debounce } from 'lodash-es'
 import type {
   Axios,
   AxiosRequestConfig,
   AxiosError,
   AxiosResponse,
-  InternalAxiosRequestConfig
+  InternalAxiosRequestConfig,
 } from 'axios'
+import router from '@/router'
 
-interface IRequestConfig extends AxiosRequestConfig {
+interface IRequestConfig<D = any> extends AxiosRequestConfig<D> {
   silent?: boolean // silent 默认为 false（undefined），统一错误弹窗，手动置true为自定义处理错误，不弹窗
+}
+
+interface IAxiosResponse<T = any, D = any> extends AxiosResponse<T, D> {
+  config: InternalAxiosRequestConfig<D> & { silent?: boolean }
 }
 
 interface IRequesInstancce extends Axios {
@@ -23,7 +28,15 @@ interface IRequesInstancce extends Axios {
   delete<T>(url: string, config?: IRequestConfig): Promise<T>
 }
 
-class RequestError extends Error {
+const errorsMap = new Map<number, string>([
+  [401, '未授权'],
+  [403, '拒绝访问'],
+  [404, '接口路径不存在'],
+  [500, '服务器内部错误'],
+  [502, '服务不可用']
+])
+
+export class RequestError extends Error {
   code: number = 1
   message: string = '请求失败'
   constructor(code: number, message: string) {
@@ -34,6 +47,24 @@ class RequestError extends Error {
 
 export const APP_TOKEN_KEY = 'app-token'
 let token = localStorage.getItem(APP_TOKEN_KEY)
+export const getToken = () => token
+export const setToken = (t: string | null) => {
+  token = t
+  if (t === null) {
+    localStorage.removeItem(APP_TOKEN_KEY)
+  } else {
+    localStorage.setItem(APP_TOKEN_KEY, t)
+  }
+}
+
+// 处理 401 未授权
+const unAuthenticated = debounce((message: string) => {
+  console.log(123)
+  ElMessage.error(message)
+  setToken(null)
+  router.replace('/login')
+}, 3000, { leading: true, trailing: false })
+
 
 const instance = axios.create({
   baseURL: '/api',
@@ -59,51 +90,28 @@ instance.interceptors.request.use(
   }
 )
 
-const errorsMap = new Map<number, string>([
-  [401, '未授权'],
-  [403, '拒绝访问'],
-  [404, '接口路径不存在'],
-  [500, '服务器内部错误'],
-  [502, '服务不可用']
-])
-
 instance.interceptors.response.use(
-  // @ts-ignore
-  (response: AxiosResponse<IResponseResult<T>, D>) => {
+  (response: IAxiosResponse) => {
+    const onError = (code: number, message: string) => {
+      if (code === 401) {
+        unAuthenticated(message)
+      } else if (!response.config.silent){
+        ElMessage.error(message)
+      }
+      return Promise.reject(new RequestError(code, message))
+    }
     if (response.status === 200) {
       if (response.data.code === 0) {
         return response.data.data
-      } else {
-        return Promise.reject(new RequestError(response.data.code, response.data.message))
       }
-    } else {
-      return Promise.reject(
-        new RequestError(response.status, errorsMap.get(response.status) || '请求失败')
-      )
+      return onError(response.data.code, response.data.message)
     }
+    return onError(response.status, errorsMap.get(response.status) || '请求失败')
   },
+
   (error: AxiosError) => {
-    // @ts-ignore
-    if (error.cocde === 401) {
-      setToken(null)
-      useRouter().replace('/login')
-    }
-    if (!error.request.silent) {
-      ElMessage.error('登录失败')
-    } else {
-      return Promise.reject(error)
-    }
+    return Promise.reject(error)
   }
 )
-
-export const getToken = () => token
-export const setToken = (t: string | null) => {
-  token = t
-  if (t === null) {
-    localStorage.removeItem(APP_TOKEN_KEY)
-  } else {
-    localStorage.setItem(APP_TOKEN_KEY, t)
-  }
-}
 
 export default instance

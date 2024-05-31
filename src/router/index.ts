@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import { getToken } from '@/utils/request'
 import Layout from '@/components/Layout.vue'
 
 /**
@@ -10,7 +9,7 @@ import Layout from '@/components/Layout.vue'
  * 如果有值，就作为 menu 导航
  * **/
 export const routes: Readonly<RouteRecordRaw[]> = [
-  { path: '/', redirect: !getToken() ? '/login' : '/system/user' },
+  { path: '/', redirect: '/system/user' },
   {
     path: '/',
     name: 'admin',
